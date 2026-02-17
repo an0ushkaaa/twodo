@@ -1,54 +1,68 @@
 {% extends "base.html" %}
-{% block title %}Create Account — TwoDo 💕{% endblock %}
+{% block title %}Create Account — TwoDo{% endblock %}
 
 {% block extra_styles %}
-.auth-wrap {
-min-height: 90vh;
-display: flex;
-align-items: center;
-justify-content: center;
-}
+<style>
+    .auth-wrap {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.auth-card {
-width: 100%;
-max-width: 420px;
-background: white;
-border-radius: 28px;
-border: 2px solid var(--purple-light);
-box-shadow: 0 20px 60px rgba(199,125,255,0.15);
-padding: 2.5rem;
-text-align: center;
-}
+    .auth-card {
+        width: 100%;
+        max-width: 420px;
+        background: white;
+        border-radius: 28px;
+        border: 2px solid var(--purple-light);
+        box-shadow: 0 20px 60px rgba(199, 125, 255, 0.15);
+        padding: 2.5rem;
+        text-align: center;
+    }
 
-.auth-logo {
-font-family: 'Fredoka One', cursive;
-font-size: 3rem;
-color: var(--pink);
-margin-bottom: 0.3rem;
-}
-.auth-logo span { color: var(--purple); }
+    .auth-logo {
+        font-family: 'Fredoka One', cursive;
+        font-size: 3rem;
+        color: var(--pink);
+        margin-bottom: 0.3rem;
+    }
 
-.auth-tagline { color: var(--text-soft); margin-bottom: 2rem; }
-.auth-card .form-group { text-align: left; }
 
-.auth-footer {
-margin-top: 1.5rem;
-font-size: 0.9rem;
-color: var(--text-soft);
-}
-.auth-footer a { color: var(--pink); font-weight: 700; text-decoration: none; }
 
-.hint {
-font-size: 0.83rem;
-color: var(--text-soft);
-margin-top: 0.3rem;
-}
+    .auth-tagline {
+        color: var(--text-soft);
+        margin-bottom: 2rem;
+    }
+
+    .auth-card .form-group {
+        text-align: left;
+    }
+
+    .auth-footer {
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-soft);
+    }
+
+    .auth-footer a {
+        color: var(--pink);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .hint {
+        font-size: 0.83rem;
+        color: var(--text-soft);
+        margin-top: 0.3rem;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="auth-wrap">
     <div class="auth-card">
-        <div class="auth-logo">Two<span>Do</span> 💕</div>
+        <div class="auth-logo">TwoDo</div>
         <p class="auth-tagline">create your account</p>
 
         <form method="POST">
@@ -57,14 +71,17 @@ margin-top: 0.3rem;
                 <input type="text" name="display_name" placeholder="e.g. Priya or Rohan" required autofocus>
                 <p class="hint">This is what your partner will see 💕</p>
             </div>
+
             <div class="form-group">
                 <label>Username</label>
                 <input type="text" name="username" placeholder="pick a username" required>
             </div>
+
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" name="password" placeholder="••••••••" required>
             </div>
+
             <button type="submit" class="btn btn-purple w-full" style="justify-content:center; margin-top:0.5rem;">
                 Create Account ✨
             </button>

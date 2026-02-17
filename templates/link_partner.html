@@ -1,40 +1,54 @@
 {% extends "base.html" %}
-{% block title %}Link Partner — TwoDo 💕{% endblock %}
+{% block title %}Link Partner — TwoDo{% endblock %}
 
 {% block extra_styles %}
-.link-wrap {
-min-height: 80vh;
-display: flex;
-align-items: center;
-justify-content: center;
-}
+<style>
+    .link-wrap {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.link-card {
-width: 100%;
-max-width: 460px;
-background: white;
-border-radius: 28px;
-border: 2px solid var(--pink-light);
-box-shadow: 0 20px 60px rgba(255,107,157,0.15);
-padding: 2.5rem;
-text-align: center;
-}
+    .link-card {
+        width: 100%;
+        max-width: 460px;
+        background: white;
+        border-radius: 28px;
+        border: 2px solid var(--pink-light);
+        box-shadow: 0 20px 60px rgba(255, 107, 157, 0.15);
+        padding: 2.5rem;
+        text-align: center;
+    }
 
-.link-emoji { font-size: 3.5rem; margin-bottom: 0.5rem; }
-.link-title {
-font-family: 'Fredoka One', cursive;
-font-size: 1.8rem;
-margin-bottom: 0.5rem;
-color: var(--text);
-}
-.link-sub { color: var(--text-soft); margin-bottom: 2rem; line-height: 1.5; }
-.link-card .form-group { text-align: left; }
+    .link-emoji {
+        font-size: 3.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .link-title {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        color: var(--text);
+    }
+
+    .link-sub {
+        color: var(--text-soft);
+        margin-bottom: 2rem;
+        line-height: 1.5;
+    }
+
+    .link-card .form-group {
+        text-align: left;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="link-wrap">
     <div class="link-card">
-        <div class="link-emoji">💑</div>
+
         <h2 class="link-title">Link with your partner!</h2>
         <p class="link-sub">
             Hi <strong>{{ user.display_name }}</strong>! Enter your partner's username to connect your accounts.

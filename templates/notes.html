@@ -1,97 +1,116 @@
 {% extends "base.html" %}
-{% block title %}Notes — TwoDo 💕{% endblock %}
+{% block title %}Notes — TwoDo{% endblock %}
 
 {% block extra_styles %}
-.notes-layout {
-display: grid;
-grid-template-columns: 1fr 1.6fr;
-gap: 1.5rem;
-align-items: start;
-}
+<style>
+    .notes-layout {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 1.5rem;
+        align-items: start;
+    }
 
-/* ── COMPOSE ── */
-.compose-card {
-position: sticky;
-top: 80px;
-}
+    /* ── COMPOSE ── */
+    .compose-card {
+        position: sticky;
+        top: 80px;
+    }
 
-.compose-card textarea {
-min-height: 140px;
-width: 100%;
-background: var(--pink-pale);
-border-color: var(--pink-light);
-font-size: 1rem;
-line-height: 1.6;
-}
+    .compose-card textarea {
+        min-height: 140px;
+        width: 100%;
+        background: var(--pink-pale);
+        border-color: var(--pink-light);
+        font-size: 1rem;
+        line-height: 1.6;
+    }
 
-.compose-card textarea:focus { border-color: var(--pink); }
+    .compose-card textarea:focus {
+        border-color: var(--pink);
+    }
 
-.no-partner-msg {
-text-align: center;
-padding: 2rem 0;
-color: var(--text-soft);
-}
-.no-partner-msg a { color: var(--pink); font-weight: 700; text-decoration: none; }
+    .no-partner-msg {
+        text-align: center;
+        padding: 2rem 0;
+        color: var(--text-soft);
+    }
 
-/* ── NOTE THREAD ── */
-.thread-label {
-font-family: 'Fredoka One', cursive;
-font-size: 1.1rem;
-color: var(--text-soft);
-margin-bottom: 1rem;
-padding-bottom: 0.7rem;
-border-bottom: 2px dashed var(--border);
-}
+    .no-partner-msg a {
+        color: var(--pink);
+        font-weight: 700;
+        text-decoration: none;
+    }
 
-.note-bubble {
-display: flex;
-flex-direction: column;
-margin-bottom: 1.2rem;
-}
+    /* ── NOTE THREAD ── */
+    .thread-label {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.1rem;
+        color: var(--text-soft);
+        margin-bottom: 1rem;
+        padding-bottom: 0.7rem;
+        border-bottom: 2px dashed var(--border);
+    }
 
-.note-bubble.mine { align-items: flex-end; }
-.note-bubble.theirs { align-items: flex-start; }
+    .note-bubble {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.2rem;
+    }
 
-.bubble-body {
-max-width: 80%;
-padding: 0.9rem 1.2rem;
-border-radius: 18px;
-font-size: 0.97rem;
-line-height: 1.6;
-font-weight: 600;
-}
+    .note-bubble.mine {
+        align-items: flex-end;
+    }
 
-.note-bubble.mine .bubble-body {
-background: linear-gradient(135deg, var(--pink), var(--coral));
-color: white;
-border-bottom-right-radius: 4px;
-}
+    .note-bubble.theirs {
+        align-items: flex-start;
+    }
 
-.note-bubble.theirs .bubble-body {
-background: white;
-color: var(--text);
-border: 2px solid var(--purple-light);
-border-bottom-left-radius: 4px;
-}
+    .bubble-body {
+        max-width: 80%;
+        padding: 0.9rem 1.2rem;
+        border-radius: 18px;
+        font-size: 0.97rem;
+        line-height: 1.6;
+        font-weight: 600;
+    }
 
-.bubble-meta {
-font-size: 0.78rem;
-color: var(--text-soft);
-margin-top: 0.35rem;
-padding: 0 4px;
-}
+    .note-bubble.mine .bubble-body {
+        background: linear-gradient(135deg, var(--pink), var(--coral));
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
 
-.empty-notes {
-text-align: center;
-padding: 3rem 0;
-color: var(--text-soft);
-font-size: 1.1rem;
-}
+    .note-bubble.theirs .bubble-body {
+        background: white;
+        color: var(--text);
+        border: 2px solid var(--purple-light);
+        border-bottom-left-radius: 4px;
+    }
 
-@media (max-width: 700px) {
-.notes-layout { grid-template-columns: 1fr; }
-.compose-card { position: static; }
-}
+    .bubble-meta {
+        font-size: 0.78rem;
+        color: var(--text-soft);
+        margin-top: 0.35rem;
+        padding: 0 4px;
+    }
+
+    .empty-notes {
+        text-align: center;
+        padding: 3rem 0;
+        color: var(--text-soft);
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 700px) {
+        .notes-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .compose-card {
+            position: static;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -116,7 +135,7 @@ font-size: 1.1rem;
         </form>
         {% else %}
         <div class="no-partner-msg">
-            <div style="font-size:2.5rem;margin-bottom:0.7rem;">💑</div>
+
             <p>Link with your partner to send notes!</p>
             <a href="{{ url_for('link_partner') }}">Connect now →</a>
         </div>

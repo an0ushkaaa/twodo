@@ -1,58 +1,64 @@
 {% extends "base.html" %}
-{% block title %}Login — TwoDo 💕{% endblock %}
+{% block title %}Login — TwoDo{% endblock %}
 
 {% block extra_styles %}
-.auth-wrap {
-min-height: 90vh;
-display: flex;
-align-items: center;
-justify-content: center;
-}
+<style>
+    .auth-wrap {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.auth-card {
-width: 100%;
-max-width: 420px;
-background: white;
-border-radius: 28px;
-border: 2px solid var(--pink-light);
-box-shadow: 0 20px 60px rgba(255,107,157,0.15);
-padding: 2.5rem;
-text-align: center;
-}
+    .auth-card {
+        width: 100%;
+        max-width: 420px;
+        background: white;
+        border-radius: 28px;
+        border: 2px solid var(--pink-light);
+        box-shadow: 0 20px 60px rgba(255, 107, 157, 0.15);
+        padding: 2.5rem;
+        text-align: center;
+    }
 
-.auth-logo {
-font-family: 'Fredoka One', cursive;
-font-size: 3rem;
-color: var(--pink);
-margin-bottom: 0.3rem;
-}
-.auth-logo span { color: var(--purple); }
+    .auth-logo {
+        font-family: 'Fredoka One', cursive;
+        font-size: 3rem;
+        color: var(--pink);
+        margin-bottom: 0.3rem;
+    }
 
-.auth-tagline {
-color: var(--text-soft);
-margin-bottom: 2rem;
-font-size: 1rem;
-}
 
-.auth-card .form-group { text-align: left; }
 
-.auth-footer {
-margin-top: 1.5rem;
-font-size: 0.9rem;
-color: var(--text-soft);
-}
-.auth-footer a {
-color: var(--pink);
-font-weight: 700;
-text-decoration: none;
-}
+    .auth-tagline {
+        color: var(--text-soft);
+        margin-bottom: 2rem;
+        font-size: 1rem;
+    }
+
+    .auth-card .form-group {
+        text-align: left;
+    }
+
+    .auth-footer {
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-soft);
+    }
+
+    .auth-footer a {
+        color: var(--pink);
+        font-weight: 700;
+        text-decoration: none;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="auth-wrap">
     <div class="auth-card">
-        <div class="auth-logo">Two<span>Do</span> 💕</div>
-        <p class="auth-tagline">your little space together</p>
+        <div class="auth-logo">TwoDo</div>
+        <p class="auth-tagline">our little space together</p>
 
         <form method="POST">
             <div class="form-group">
