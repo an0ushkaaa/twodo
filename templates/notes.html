@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Notes — TwoDo 💕{% endblock %}
+
+{% block extra_styles %}
+.notes-layout {
+display: grid;
+grid-template-columns: 1fr 1.6fr;
+gap: 1.5rem;
+align-items: start;
+}
+
+/* ── COMPOSE ── */
+.compose-card {
+position: sticky;
+top: 80px;
+}
+
+.compose-card textarea {
+min-height: 140px;
+width: 100%;
+background: var(--pink-pale);
+border-color: var(--pink-light);
+font-size: 1rem;
+line-height: 1.6;
+}
+
+.compose-card textarea:focus { border-color: var(--pink); }
+
+.no-partner-msg {
+text-align: center;
+padding: 2rem 0;
+color: var(--text-soft);
+}
+.no-partner-msg a { color: var(--pink); font-weight: 700; text-decoration: none; }
+
+/* ── NOTE THREAD ── */
+.thread-label {
+font-family: 'Fredoka One', cursive;
+font-size: 1.1rem;
+color: var(--text-soft);
+margin-bottom: 1rem;
+padding-bottom: 0.7rem;
+border-bottom: 2px dashed var(--border);
+}
+
+.note-bubble {
+display: flex;
+flex-direction: column;
+margin-bottom: 1.2rem;
+}
+
+.note-bubble.mine { align-items: flex-end; }
+.note-bubble.theirs { align-items: flex-start; }
+
+.bubble-body {
+max-width: 80%;
+padding: 0.9rem 1.2rem;
+border-radius: 18px;
+font-size: 0.97rem;
+line-height: 1.6;
+font-weight: 600;
+}
+
+.note-bubble.mine .bubble-body {
+background: linear-gradient(135deg, var(--pink), var(--coral));
+color: white;
+border-bottom-right-radius: 4px;
+}
+
+.note-bubble.theirs .bubble-body {
+background: white;
+color: var(--text);
+border: 2px solid var(--purple-light);
+border-bottom-left-radius: 4px;
+}
+
+.bubble-meta {
+font-size: 0.78rem;
+color: var(--text-soft);
+margin-top: 0.35rem;
+padding: 0 4px;
+}
+
+.empty-notes {
+text-align: center;
+padding: 3rem 0;
+color: var(--text-soft);
+font-size: 1.1rem;
+}
+
+@media (max-width: 700px) {
+.notes-layout { grid-template-columns: 1fr; }
+.compose-card { position: static; }
+}
+{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">💌 Notes & Letters</h1>
+
+<div class="notes-layout">
+
+    <!-- LEFT: COMPOSE -->
+    <div class="card compose-card">
+        <div class="card-title">Write a Note</div>
+
+        {% if partner %}
+        <p class="text-soft text-sm" style="margin-bottom:1rem;">
+            To: <strong style="color:var(--purple);">{{ partner.display_name }}</strong> 💕
+        </p>
+        <form method="POST" action="{{ url_for('send_note') }}">
+            <textarea name="message" placeholder="Hey love, just wanted to say..." required></textarea>
+            <button type="submit" class="btn btn-pink" style="margin-top:0.8rem; width:100%; justify-content:center;">
+                Send Note 💌
+            </button>
+        </form>
+        {% else %}
+        <div class="no-partner-msg">
+            <div style="font-size:2.5rem;margin-bottom:0.7rem;">💑</div>
+            <p>Link with your partner to send notes!</p>
+            <a href="{{ url_for('link_partner') }}">Connect now →</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- RIGHT: CONVERSATION THREAD -->
+    <div class="card">
+        <div class="thread-label">
+            📬 Your conversation
+            {% if notes %}
+            ({{ notes | length }} notes)
+            {% endif %}
+        </div>
+
+        {% if notes %}
+        {% for note in notes %}
+        <div class="note-bubble {% if note.from_user == user.id %}mine{% else %}theirs{% endif %}">
+            <div class="bubble-body">{{ note.message }}</div>
+            <div class="bubble-meta">
+                {{ note.sender_name }} · {{ note.created_at[:16] }}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="empty-notes">
+            No notes yet 💌<br>
+            <span class="text-sm">Send the first one!</span>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

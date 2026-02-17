@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TwoDo 💕{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ── DESIGN TOKENS ── */
+        :root {
+            --pink: #ffb3d9;
+            --pink-light: #ffe4f2;
+            --pink-pale: #fff8fc;
+            --purple: #d4b5ff;
+            --purple-light: #f0e4ff;
+            --yellow: #ffe9a3;
+            --mint: #a8e6cf;
+            --mint-light: #d4f4e8;
+            --coral: #ffcab0;
+            --sky: #b8e6f7;
+            --white: #ffffff;
+            --text: #4a4a4a;
+            --text-soft: #9a9a9a;
+            --card-bg: #ffffff;
+            --border: rgba(0, 0, 0, 0.06);
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            --radius: 20px;
+            --radius-sm: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #fafafa;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── SUBTLE BACKGROUND ── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 20%, rgba(255, 179, 217, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212, 181, 255, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .navbar-brand {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8rem;
+            color: var(--pink);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            padding: 0.6rem 1.2rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-soft);
+            transition: all 0.2s;
+        }
+
+        .navbar-links a:hover,
+        .navbar-links a.active {
+            background: var(--pink-light);
+            color: var(--pink);
+        }
+
+        .navbar-links a.logout {
+            color: var(--text-soft);
+        }
+
+        .navbar-links a.logout:hover {
+            background: #ffe0e0;
+            color: #e05555;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+        }
+
+        /* ── CARDS ── */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.4rem;
+            border-radius: 999px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-pink {
+            background: linear-gradient(135deg, var(--pink), var(--coral));
+            color: white;
+            box-shadow: 0 4px 14px rgba(255, 107, 157, 0.35);
+        }
+
+        .btn-pink:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.45);
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, var(--purple), #9b59ff);
+            color: white;
+            box-shadow: 0 4px 14px rgba(199, 125, 255, 0.35);
+        }
+
+        .btn-purple:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-mint {
+            background: linear-gradient(135deg, var(--mint), #00c98a);
+            color: white;
+            box-shadow: 0 4px 14px rgba(6, 214, 160, 0.35);
+        }
+
+        .btn-mint:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-soft);
+            border: 2px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--pink-light);
+            color: var(--pink);
+            border-color: var(--pink-light);
+        }
+
+        .btn-sm {
+            padding: 0.45rem 1.1rem;
+            font-size: 0.9rem;
+        }
+
+        /* ── FORMS ── */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-soft);
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            color: var(--text);
+            background: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+            border-color: var(--pink);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .btn-sm {
+            padding: 0.35rem 0.9rem;
+            font-size: 0.85rem;
+        }
+
+        /* ── FORMS ── */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-soft);
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            color: var(--text);
+            background: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+            border-color: var(--pink);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* ── FLASH MESSAGES ── */
+        .flash {
+            padding: 0.9rem 1.2rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+        }
+
+        .flash.success {
+            background: var(--mint-light);
+            color: #047857;
+        }
+
+        .flash.error {
+            background: #ffe4e4;
+            color: #c0392b;
+        }
+
+        /* ── PAGE TITLE ── */
+        .page-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── UTILITY ── */
+        .text-soft {
+            color: var(--text-soft);
+        }
+
+        .text-sm {
+            font-size: 0.88rem;
+        }
+
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .gap-1 {
+            gap: 0.5rem;
+        }
+
+        .gap-2 {
+            gap: 1rem;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+    </style>
+
+    {% block extra_styles %}{% endblock %}
+</head>
+
+<body>
+
+    {% if session.get('user_id') %}
+
+    <nav class="navbar">
+        <a href="{{ url_for('dashboard') }}" class="navbar-brand">TwoDo</a>
+        <div class="navbar-links">
+            <a href="{{ url_for('dashboard') }}" {% if request.endpoint=='dashboard' %}class="active" {% endif %}>🏠
+                Home</a>
+            <a href="{{ url_for('notes') }}" {% if request.endpoint=='notes' %}class="active" {% endif %}>Notes</a>
+            <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        </div>
+    </nav>
+    {% endif %}
+
+    <main class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

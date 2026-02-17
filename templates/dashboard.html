@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — TwoDo{% endblock %}
+
+{% block extra_styles %}
+<style>
+    /* ───────── GREETING ───────── */
+    .greeting {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6rem;
+        flex-wrap: wrap;
+    }
+
+    .greeting-text h1 {
+        font-family: 'Fredoka One', cursive;
+        font-size: 2.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .greeting-text p {
+        color: var(--text-soft);
+        font-size: 1.1rem;
+    }
+
+    /* ───────── NO PARTNER CARD ───────── */
+    .no-partner-card {
+        background: linear-gradient(135deg, var(--pink-pale), var(--purple-light));
+        border-radius: var(--radius);
+        border: 1px dashed var(--border);
+        padding: 3.5rem;
+        text-align: center;
+        margin-bottom: 6rem;
+    }
+
+    .no-partner-card h3 {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .no-partner-card p {
+        color: var(--text-soft);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* ───────── GRID ───────── */
+    .todo-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+    }
+
+    /* ───────── CARD SPACING ───────── */
+    .card {
+        padding: 3rem;
+    }
+
+    /* ───────── COLUMN HEADER ───────── */
+    .todo-col-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+    }
+
+    .owner-tag {
+        padding: 0.6rem 1.5rem;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        background: var(--pink-light);
+        color: var(--pink);
+    }
+
+    .owner-tag.partner {
+        background: var(--purple-light);
+        color: var(--purple);
+    }
+
+    .todo-count {
+        padding: 0.5rem 1.2rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        background: var(--pink-pale);
+        color: var(--text-soft);
+    }
+
+    /* ───────── ADD FORM ───────── */
+    .todo-add-form {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .todo-add-form input {
+        flex: 1;
+        padding: 1.1rem 1.4rem;
+        font-size: 1.05rem;
+    }
+
+    /* ───────── LIST ───────── */
+    .todo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-height: 600px;
+        overflow-y: auto;
+    }
+
+    /* ───────── TODO ITEM ───────── */
+    .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.6rem 1.8rem;
+        border-radius: 18px;
+        background: var(--pink-pale);
+        transition: all 0.2s ease;
+    }
+
+    .todo-item.partner-item {
+        background: var(--purple-light);
+    }
+
+    .todo-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .todo-item.done {
+        opacity: 0.5;
+    }
+
+    .todo-item.done .todo-text {
+        text-decoration: line-through;
+    }
+
+    /* ───────── CHECKBOX STYLE ───────── */
+    .todo-checkbox {
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        border: 2px solid var(--pink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: white;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .todo-checkbox:hover {
+        box-shadow: 0 0 0 4px rgba(255, 179, 217, 0.25);
+    }
+
+    .todo-checkbox.checked {
+        background: var(--pink);
+        border-color: var(--pink);
+        color: white;
+    }
+
+    .todo-text {
+        flex: 1;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .todo-delete {
+        font-size: 1.3rem;
+        color: var(--text-soft);
+        text-decoration: none;
+        opacity: 0;
+        transition: 0.2s;
+    }
+
+    .todo-item:hover .todo-delete {
+        opacity: 1;
+    }
+
+    .todo-delete:hover {
+        color: #e05555;
+    }
+
+    /* ───────── EMPTY STATE ───────── */
+    .empty-todos {
+        text-align: center;
+        color: var(--text-soft);
+        padding: 4rem 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* ───────── MOBILE ───────── */
+    @media (max-width: 900px) {
+        .todo-columns {
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="greeting">
+    <div class="greeting-text">
+        <h1>Hey {{ user.display_name }} 👋</h1>
+        <p>
+            {% if partner %}
+            You're connected with <strong>{{ partner.display_name }}</strong> 💕
+            {% else %}
+            Your shared space is waiting ✨
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+{% if not partner %}
+<div class="no-partner-card">
+    <h3>Connect with your partner</h3>
+    <p>Create your shared space and start building together.</p>
+    <a href="{{ url_for('link_partner') }}" class="btn btn-pink btn-sm">Connect Now</a>
+</div>
+{% endif %}
+
+<div class="todo-columns">
+
+    <!-- MY LIST -->
+    <div class="card">
+        <div class="todo-col-header">
+            <span class="owner-tag">{{ user.display_name }}'s List</span>
+            <span class="todo-count">
+                {{ my_todos | selectattr('done','equalto',0) | list | length }} left
+            </span>
+        </div>
+
+        <form method="POST" action="{{ url_for('add_todo') }}" class="todo-add-form">
+            <input type="text" name="text" placeholder="Add something meaningful..." required>
+            <button type="submit" class="btn btn-pink btn-sm">+ Add</button>
+        </form>
+
+        <div class="todo-list">
+            {% if my_todos %}
+            {% for todo in my_todos %}
+            <div class="todo-item {% if todo.done %}done{% endif %}">
+                <a href="{{ url_for('toggle_todo', todo_id=todo.id) }}"
+                    class="todo-checkbox {% if todo.done %}checked{% endif %}">
+                    {% if todo.done %}✓{% endif %}
+                </a>
+                <span class="todo-text">{{ todo.text }}</span>
+                <a href="{{ url_for('delete_todo', todo_id=todo.id) }}" class="todo-delete">✕</a>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-todos">
+                All clear ✨ Add something to get started.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- PARTNER LIST -->
+    <div class="card">
+        <div class="todo-col-header">
+            <span class="owner-tag partner">
+                {{ partner.display_name if partner else "Partner" }}'s List
+            </span>
+            {% if partner_todos %}
+            <span class="todo-count">
+                {{ partner_todos | selectattr('done','equalto',0) | list | length }} left
+            </span>
+            {% endif %}
+        </div>
+
+        <div class="todo-list" style="margin-top: 1rem;">
+            {% if not partner %}
+            <div class="empty-todos">
+                Connect to see your partner's tasks 💌
+            </div>
+            {% elif partner_todos %}
+            {% for todo in partner_todos %}
+            <div class="todo-item partner-item {% if todo.done %}done{% endif %}">
+                <span class="todo-checkbox {% if todo.done %}checked{% endif %}"
+                    style="cursor: default; border-color: var(--purple);">
+                    {% if todo.done %}✓{% endif %}
+                </span>
+                <span class="todo-text">{{ todo.text }}</span>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-todos">
+                {{ partner.display_name }} hasn't added anything yet ✨
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
