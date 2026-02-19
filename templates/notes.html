@@ -156,7 +156,8 @@
         <div class="note-bubble {% if note.from_user == user.id %}mine{% else %}theirs{% endif %}">
             <div class="bubble-body">{{ note.message }}</div>
             <div class="bubble-meta">
-                {{ note.sender_name }} · {{ note.created_at[:16] }}
+                {{ note.sender_name }} · {{ note.created_at.strftime('%d %b %Y, %H:%M') }}
+
             </div>
         </div>
         {% endfor %}
